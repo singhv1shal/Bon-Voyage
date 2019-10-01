@@ -12,3 +12,7 @@ This app has many more features which can ameliorate Jignesh's journey experienc
 * Bookmark your favourites (food, shops, restaurants etc) from your visits.
 * Notifies you of your favourite delicacies you had in a particular restaurants.
 * This application is personalized and is based on one's own feedbacks unlike other existing applications.
+
+## Work Breakdown Structure
+![alt text](https://github.com/singhv1shal/Bon-Voyage/blob/master/Images/WBS.png)
+
