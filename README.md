@@ -12,6 +12,12 @@ This app has many more features which can ameliorate Jignesh's journey experienc
 * Bookmark your favourites (food, shops, restaurants etc) from your visits.
 * Notifies you of your favourite delicacies you had in a particular restaurants.
 * This application is personalized and is based on one's own feedbacks unlike other existing applications.
+* Make a list of places you want to visit in the future.
+* Notifies you of the weather of a place.
+* Add personal comments on any place of your choice.
+* Provides a list of places you have visited before.
+* Also provides list of places your friends have visited before.
+* Provides Date and Time of your last visit on any place.
 
 ## Work Breakdown Structure
 ![alt text](https://github.com/singhv1shal/Bon-Voyage/blob/master/Images/WBS.png)
@@ -24,3 +30,11 @@ This app has many more features which can ameliorate Jignesh's journey experienc
 - [ ] Front-end - Landing Page, Home Page, Contribute Page, Queries and Contact Page
 
 - [ ] Journey Tracker
+
+### References
+
+1. Polarsteps
+2. Journi Blog
+3. Tripcast
+4. Commute Tracker
+5. Bonjournal
