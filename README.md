@@ -17,10 +17,10 @@ This app has many more features which can ameliorate Jignesh's journey experienc
 ![alt text](https://github.com/singhv1shal/Bon-Voyage/blob/master/Images/WBS.png)
 
 
-### Task Lists (upto date 04/10/2019)
+### Task Lists
 
 - [x] Finish Work Breakdown Structure.
 
-- [ ] Front-end - Landing Page, Home Page, Contribute Page, Queries and Contact Page - Prashant and Aniket.
+- [ ] Front-end - Landing Page, Home Page, Contribute Page, Queries and Contact Page
 
-- [ ] Journey Tracker - Vishal and Siddharth.
+- [ ] Journey Tracker
