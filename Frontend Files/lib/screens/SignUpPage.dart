@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:bon_voyage/screens/LoggedInPage.dart';
 import 'package:http/http.dart' as http;
 
-final SERVER_IP = 'https://e0a328310508.ngrok.io';
+final SERVER_IP = 'https://aa71c52e9b6b.ngrok.io';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class SignUpPage extends StatefulWidget {
 class SignUpKaro extends State<SignUpPage> {
   var _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -124,6 +125,40 @@ class SignUpKaro extends State<SignUpPage> {
                                 suffixIcon: Icon(Icons.text_format),
                                 labelText: 'Name',
                                 hintText: 'eg. Kushagra',
+//                              fillColor: Colors.white30,
+                                hintStyle: TextStyle(
+                                  color: Colors.white70,
+                                ),
+                                labelStyle: TextStyle(
+                                    fontFamily: 'Raleway', color: Colors.white70),
+                                errorStyle: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.redAccent,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                )),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.0,right:15.0,top:15.0),
+                          child: TextFormField(
+//                    keyboardType: TextInputType.number,
+                            style: TextStyle(
+                              fontFamily: 'Raleway',
+                              color: Colors.white70,
+                            ),
+                            controller: ageController,
+                            // ignore: missing_return
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Enter your age';
+                              }
+                            },
+                            decoration: InputDecoration(
+                                suffixIcon: Icon(Icons.looks_one),
+                                labelText: 'Age',
+                                hintText: 'eg. 69',
 //                              fillColor: Colors.white30,
                                 hintStyle: TextStyle(
                                   color: Colors.white70,
@@ -274,7 +309,7 @@ class SignUpKaro extends State<SignUpPage> {
                           debugPrint('Register Tapped');
                           setState(() {
                             if (_formKey.currentState.validate()) {
-                              createAlbum(nameController, usernameController,emailController,
+                              createAlbum(nameController, ageController, usernameController,emailController,
                                   passwordController);
                             }
                           });
@@ -291,13 +326,14 @@ class SignUpKaro extends State<SignUpPage> {
     );
   }
 
-  Future createAlbum(TextEditingController name,TextEditingController username, TextEditingController email,
+  Future createAlbum(TextEditingController name,TextEditingController age, TextEditingController username, TextEditingController email,
       TextEditingController pass) async {
     debugPrint(username.text);
     debugPrint(email.text);
     debugPrint(pass.text);
     String ss=name.text;
     String n = username.text;
+    int age1 = int.parse(age.text);
     String a = email.text;
     String b = pass.text;
 
@@ -317,7 +353,7 @@ class SignUpKaro extends State<SignUpPage> {
       "$SERVER_IP/users",
       headers: headers,
       body: jsonEncode(
-          <String, String>{"name": "$ss", "username": "$n", "email": "$a", "password": "$b"}),
+          <String, dynamic>{"name": "$ss","age": age1, "username": "$n", "email": "$a", "password": "$b"}),
     );
 
     if (res.statusCode == 400) {

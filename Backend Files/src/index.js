@@ -5,11 +5,12 @@ const express = require('express')
 require('./db/mongoose')
 
 // Importing various paths/routes/URL to the user
-const userRouter = require('./routers/user')           
+const userRouter = require('./routers/user')   
+const dayvisitRouter = require('./routers/dayvisit')           
 const visitRouter = require('./routers/visit')           
 const bookmarkRouter = require('./routers/bookmark')   
 const forecastRouter = require('./routers/forecast')   
-const distanceRouter = require('./routers/distance')   
+const distanceRouter = require('./routers/distance') 
 
 
 // Syntax to set port to localhost or given port(after deployment)
@@ -21,11 +22,13 @@ const port = process.env.PORT || 3000
 app.use(express.json())                                
 
 // Instructing to use other routes
-app.use(userRouter)                                    
+app.use(userRouter)   
+app.use(dayvisitRouter)                                     
 app.use(visitRouter)                                   
 app.use(bookmarkRouter)                                
 app.use(forecastRouter)
-app.use(distanceRouter)                                
+app.use(distanceRouter)
+                            
                          
 
 // To run server and to print the port in console

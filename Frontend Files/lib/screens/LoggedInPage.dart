@@ -7,7 +7,8 @@ import 'dart:async' show Future;
 
 import '../main.dart';
 import 'MapPage.dart';
-final SERVER_IP = 'https://e0a328310508.ngrok.io';
+import 'NavigatePage.dart';
+final SERVER_IP = 'https://aa71c52e9b6b.ngrok.io';
 
 // ignore: must_be_immutable
 class LoggedInPage extends StatefulWidget {
@@ -74,7 +75,7 @@ class NewLoginPage extends State<LoggedInPage> {
 
 
                   Container(
-                    height: 200.0,
+                    height: 150.0,
                   ),
 
                   Align(
@@ -104,8 +105,26 @@ class NewLoginPage extends State<LoggedInPage> {
                               }));
                         }),
                   ),
+                  Container(
+                    height: 20.0,
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: RaisedButton(
+                        child: Text('Travel'),
+                        onPressed: () {
+                          debugPrint('Travel tapped  $jsonn');
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                                return NavigatePage(jsonn);
+                              }));
 
-                  Container(height: 140.0),
+                        }),
+                  ),
+                  Container(
+                    height: 20.0,
+                  ),
+                  Container(height: 80.0),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Row(
@@ -114,23 +133,21 @@ class NewLoginPage extends State<LoggedInPage> {
                         Container(width: 20.0),
                         Expanded(
 
-                          child: RaisedButton(
-                              child: Text('Log Out'),
-                              onPressed: () {
-//                            debugPrint('LOGOUT TAPPED');
-                                logoutHere('$jsonn');
-//                            debugPrint('Logout done');
-                              }
-                          ),
-                        ),
-                        Container(width: 20.0),
-                        Expanded(
+                          child: Center(
+                            child: RaisedButton(
+                                child: Text('Log Out'),
+                                onPressed: () {
 
-                          child: RaisedButton(
-                              child: Text('Log Out ALL'),
-                              onPressed: () {
-                                logoutAllDev('$jsonn');
-                              }
+                                  showDialog(
+                                      context: context,
+                                      // ignore: missing_return
+                                      builder: (BuildContext context) {
+                                      return logoutHere('$jsonn');
+                                      }
+                                  );
+                                  // add alert dialog for removing this device or all
+                                }
+                            ),
                           ),
                         ),
                         Container(width: 20.0),
@@ -146,29 +163,70 @@ class NewLoginPage extends State<LoggedInPage> {
 
 
 
-  Future logoutHere(String _token) async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Authorization": "Bearer $_token"
-    };
+  Widget logoutHere(String _token) {
+    bool visited = false;
+    return AlertDialog(content: StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Container(
+            height: 200.0,
+            child: Center(
+                child: Column(
+                  children: <Widget>[
+                    Container(height:20.0),
+                    Text('Come back soon!'),
+                    Container(height: 35.0),
+                    CheckboxListTile(
+                        title: Text('Logout from all devices?'),
+                        value: visited,
+                        onChanged: (bool val) {
+                          setState(() {
+                            visited = val;
+                          });
+                        }),
+                    Container(height:22.0),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: RaisedButton(
+                              child: Text('Quit'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                logoutAllDev(_token,visited);
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyApp()
+                                    ),
+                                    ModalRoute.withName("../main")
+                                );
+                              },
+                            )
+                        ),
+                        Container(width: 30.0),
+                        Expanded(
+                          child: RaisedButton(
+                            child: Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ),
+                      ],
+                    ),
 
-
-    http.Response res = await http.post(
-      "$SERVER_IP/users/logout",
-      headers: headers,
-    );
-
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MyApp()
-        ),
-        ModalRoute.withName("../main")
-    );
+                  ],
+                )));
+      },
+    ));
   }
 
-  Future logoutAllDev(String _token) async {
+  Future logoutAllDev(String _token,bool visited) async {
+    String where;
+    if(visited==true)
+      where="logoutAll";
+    else
+      where="logout";
+
     Map<String, String> headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -177,17 +235,11 @@ class NewLoginPage extends State<LoggedInPage> {
 
 
     http.Response res = await http.post(
-      "$SERVER_IP/users/logoutAll",
+      "$SERVER_IP/users/$where",
       headers: headers,
     );
 
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MyApp()
-        ),
-        ModalRoute.withName("../main")
-    );
+
   }
 
 

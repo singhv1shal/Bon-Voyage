@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')                         //Importing bcryptjs 
 const jwt = require('jsonwebtoken')                        //Importing jsonwebtokens for handling tokens
 const Visit = require('./visit')                           //Importing visit model
 const Bookmark = require('./bookmark')  
+const Dayvisit = require('./dayvisit')
 
 //Defining model
 const userSchema = new mongoose.Schema({                   
@@ -59,6 +60,13 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    city: [{
+        type: String
+    }],
+    cities: {
+        type: Number,
+        default: 0
+    },
     following: [{
         type: String
     }],
@@ -111,6 +119,12 @@ const userSchema = new mongoose.Schema({
 
 userSchema.virtual('visits', {
     ref: 'Visit',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+userSchema.virtual('dayvisits', {
+    ref: 'Dayvisit',
     localField: '_id',
     foreignField: 'owner'
 })

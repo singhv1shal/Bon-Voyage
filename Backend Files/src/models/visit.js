@@ -18,6 +18,10 @@ const visitSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    rating: {
+        type: Number,
+        required: false
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

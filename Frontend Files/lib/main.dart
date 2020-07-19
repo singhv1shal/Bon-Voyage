@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:bon_voyage/screens/LogInPage.dart';
 import 'package:bon_voyage/screens/SignUpPage.dart';
+final SERVER_IP = 'https://aa71c52e9b6b.ngrok.io';
 
 void main() {
   runApp(MyApp());

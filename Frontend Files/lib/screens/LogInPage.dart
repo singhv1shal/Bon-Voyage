@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:bon_voyage/screens/LoggedInPage.dart';
 import 'package:http/http.dart' as http;
 
-final SERVER_IP = 'https://e0a328310508.ngrok.io';
+final SERVER_IP = 'https://aa71c52e9b6b.ngrok.io';
 
 class LogInPage extends StatefulWidget {
   @override
@@ -305,6 +305,7 @@ class LogInKaro extends State<LogInPage> {
                             child: RaisedButton(
                               child: Text('Verify'),
                               onPressed: () async {
+                                Navigator.of(context).pop();
                                 callVerify(code.text, a , b);
                               },
                             ),

@@ -1,7 +1,10 @@
 const express = require('express')
 const Visit = require('../models/visit')
+const User = require('../models/user')
+const forecast = require('../utils/forecast')
 const auth = require('../middleware/auth')
 const router = new express.Router()
+const request = require('request')          
 
 router.post('/visits', auth, async (req, res) => {
     const visit = new Visit({
@@ -9,11 +12,54 @@ router.post('/visits', auth, async (req, res) => {
         owner: req.user._id
     })
 
-    try { 
-        await visit.save()
-        res.status(201).send(visit)
-    } catch (e) {
-        res.status(400).send(e)
+    if(visit.visited)
+    {
+        flag = false
+        city = 'Varun' 
+
+        const url = 'https://www.mapquestapi.com/geocoding/v1/reverse?key=uK5ypqb39ZNnlV0f8xkTUisANzpG4o92&location='+req.body.latitude+','+req.body.longitude
+
+        request({url: url, json: true}, (error, response) => {
+                city=response.body.results[0].locations[0].adminArea5
+        })
+
+            for(i=0;i<req.user.cities;i++){
+                if(city===req.user.city[i]){
+                    flag=true
+                    break
+                }
+            }
+
+        if(!flag){
+            try{       
+                console.log(city)
+                await User.findOneAndUpdate({username: req.user.username}, {$inc: {cities: 1}})
+                await User.findOneAndUpdate({username: req.user.username}, {$push: {city: city}})
+                await visit.save()
+                res.status(201).send(visit)
+            } catch (e) {
+                console.log(e)
+                res.status(404).send('Cant send request!')
+            }
+        }
+        else
+        {
+            try { 
+                await visit.save()
+                res.status(201).send(visit)
+            } catch (e) {
+                res.status(400).send(e)
+            }
+        }
+    }
+    else
+    {
+        try { 
+            await visit.save()
+            res.status(201).send(visit)
+        } catch (e) {
+            res.status(400).send(e)
+        }
     }
 })
  
@@ -99,6 +145,34 @@ router.delete('/visits/:id', auth, async (req, res) => {
 
         res.send(visit)
     } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// GET /getinfo?latitude=10&longitude=20
+router.get('/getinfo', auth, async (req, res) => {
+    const match = {}
+
+    match.latitude = req.query.latitude
+    match.longitude = req.query.longitude
+    match.visited = true
+
+    try {
+        var student = [];
+
+        for(i=0;i<req.user.following.length;i++)
+        {
+            username=req.user.following[i]
+            const person= await User.findOne({ username })
+            await person.populate({
+                        path: 'visits',
+                        match
+                    }).execPopulate()
+            student.push(person.visits);
+        }
+        res.status(200).send(student)
+    } catch (e) {
+        console.log(e)
         res.status(500).send()
     }
 })
